@@ -1,4 +1,12 @@
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+
+@Entity()
 export class Tweet {
-    id: string;
+    @PrimaryGeneratedColumn('increment')
+    id: number;
+
+    @Column()
     message: string;
+
+
 }

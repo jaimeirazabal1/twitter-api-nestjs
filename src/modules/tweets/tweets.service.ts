@@ -7,7 +7,7 @@ import { UpdateTweetDto } from './dto/update-tweet.dto';
 export class TweetsService {
     private tweets: Tweet[] = [
         {
-            id: '1',
+            id: 1,
             message: 'Hello world from from nest.js 😘'
         }
     ];
@@ -16,7 +16,7 @@ export class TweetsService {
         return this.tweets;
     }
 
-    getTweet(id: string): Tweet {
+    getTweet(id: number): Tweet {
         const tweet = this.tweets.find((item) => item.id === id);
         if (!tweet) {
             throw new NotFoundException("Resource not found")
@@ -26,18 +26,18 @@ export class TweetsService {
 
     createTweet({ message }: CreateTweetDtoTs) {
         this.tweets.push({
-            id: (Math.floor(Math.random() * 2000) + 1).toString(),
+            id: (Math.floor(Math.random() * 2000) + 1),
             message
         })
     }
 
-    updateTweet(id: string, { message }: UpdateTweetDto) {
+    updateTweet(id: number, { message }: UpdateTweetDto) {
         const tweet: Tweet = this.getTweet(id);
         tweet.message = message;
         return tweet;
     }
 
-    removeTweet(id: string) {
+    removeTweet(id: number) {
         const index = this.tweets.findIndex((tweet) => tweet.id === id);
         if (index >= 0) {
             this.tweets.splice(index, 1)
