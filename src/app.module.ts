@@ -2,19 +2,23 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { TweetsModule } from './modules/tweets/tweets.module';
+import { DatabaseModule } from './database/database.module';
+import { UsersModule } from './modules/users/users.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
-  imports: [TweetsModule, TypeOrmModule.forRoot({
-    type: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    username: 'user',
-    password: 'password',
-    logging: false,
-    database: 'database',
-    autoLoadEntities: true,
-    synchronize: true, //solo para desarrollo porque se cambia la base de datos en cualquier cambio
-  })]
+  imports: [
+    //isGlobal es para no importarlo en los demas modulos para usarlo
+    ConfigModule.forRoot({ isGlobal: true }),
+    TweetsModule,
+    DatabaseModule,
+    UsersModule]
 })
 
-export class AppModule { }
+export class AppModule {
+  static port: number;
+  constructor(private readonly configService: ConfigService) {
+    //el mas, castea de string a number
+    AppModule.port = +this.configService.get('PORT');
+  }
+}

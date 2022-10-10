@@ -8,9 +8,12 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({
     transform: true,
     whitelist: true,//filter request properties
-    forbidNonWhitelisted: true //validate request properties and send bad request
+    forbidNonWhitelisted: true, //validate request properties and send bad request
+    transformOptions: {
+      enableImplicitConversion: true // nos aseguramos que los tipos que se envian por parametro en los query sean correctos. Es como un casteo
+    }
   }));
 
-  await app.listen(3000);
+  await app.listen(AppModule.port);
 }
 bootstrap();
